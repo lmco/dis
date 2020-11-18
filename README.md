@@ -39,13 +39,11 @@ MCF sessions with authentication tokens.
 2. In the services folder, create a .js file the same name as the service name. This file should export a class and must have the method "handleAuth" implemented. The following parameters will be passed:
 
     ```javascript
-    /**
-     * @param {Object} message the object containing the properties below.
-     * @param {String} message.sessionId the session ID for the user.
-     * @param {String} message.user the users username.
-     * @param {String} message.token the users MCF token.
-     * @param {Boolean} message.exists true/false if users integration key exists. in MCF
-     */
+     @param {Object} message the object containing the properties below.
+     @param {String} message.sessionId the session ID for the user.
+     @param {String} message.user the users username.
+     @param {String} message.token the users MCF token.
+     @param {Boolean} message.exists true/false if users integration key exists. in MCF
     ```
 
 3. Next, in the index.js file, import the class and add a property to the 'serviceClasses' object creating a new instance to the service class you created. Make sure the property is the same name as the service.
