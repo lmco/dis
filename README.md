@@ -26,7 +26,7 @@ MCF sessions with authentication tokens.
 
 ## Adding New Services
 
-1. In the services-config.js file, add a new object block for your service.
+1. In the `services-config.js file`, add a new object block for your service.
     Example
 
     ```javascript
@@ -36,7 +36,7 @@ MCF sessions with authentication tokens.
     }
     ```
 
-2. In the services folder, create a .js file the same name as the service name. This file should export a class and must have the method "handleAuth" implemented. The following parameters will be passed:
+2. In the services folder, create a .js file the same name as the service name. This file should export a class and must have the method `handleAuth` implemented. The following parameters will be passed:
 
     ```javascript
      @param {Object} message the object containing the properties below.
@@ -46,9 +46,9 @@ MCF sessions with authentication tokens.
      @param {Boolean} message.exists true/false if users integration key exists. in MCF
     ```
 
-3. Next, in the index.js file, import the class and add a property to the 'serviceClasses' object creating a new instance to the service class you created. Make sure the property is the same name as the service.
+3. Next, in the `index.js` file, import the class and add a property to the `serviceClasses` object creating a new instance to the service class you created. Make sure the property is the same name as the service.
 
-4. Create a .env file in the root directory and copy the contents from the example.env file. Update the following Environment Variables.
+4. Create a `.env` file in the root directory and copy the contents from the `example.env` file. Update the following Environment Variables.
 
 ```bash
 # this should be false in production
