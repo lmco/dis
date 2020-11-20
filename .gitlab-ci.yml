@@ -17,7 +17,7 @@ stages:
 Docker Build & Push:
   stage: Docker
   tags:
-    - docker-builder
+    - docker
   image: docker:latest
   only:
     - develop
