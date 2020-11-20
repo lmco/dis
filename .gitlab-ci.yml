@@ -18,7 +18,7 @@ Docker Build & Push:
   stage: Docker
   tags:
     - docker-builder
-  image: registry.gitlab.us.lmco.com:443/mbx/mbee/mcf/gitlab-docker-build-image:latest
+  image: registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/gitlab-docker-build-image:latest
   only:
     - develop
     - master
