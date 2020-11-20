@@ -17,7 +17,7 @@ stages:
 Docker Build & Push:
   stage: Docker
   tags:
-    - docker
+    - shell
   only:
     - develop
     - master
