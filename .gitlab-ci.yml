@@ -1,0 +1,32 @@
+variables:
+  HTTP_PROXY: http://proxy3.lmco.com:80
+  HTTPS_PROXY: http://proxy3.lmco.com:80
+  http_proxy: http://proxy3.lmco.com:80
+  https_proxy: http://proxy3.lmco.com:80
+  NO_PROXY: 127.0.0.1,localhost
+  GIT_SSL_NO_VERIFY: "true"
+  GIT_STRATEGY: clone
+  DTR_URL: dtr.mbx.us.lmco.com
+  DTR_ORG: mbee
+  DTR_REPO: dis
+  DTR_TAG: latest
+
+stages:
+  - Docker
+
+Docker Build & Push:
+  stage: Docker
+  tags:
+    - shell
+  only:
+    - develop
+    - master
+  script:
+    - export DTR_URI=$DTR_URL/$DTR_ORG/$DTR_REPO
+    - docker build -t dis .
+    - docker tag dis registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.gitlab.us.lmco.com:443
+    - docker push registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis:latest
+    - docker tag dis $DTR_URI:$DTR_TAG
+    - docker login $DTR_URL -u "$DTR_USER" -p $DTR_API_KEY
+    - docker push $DTR_URI:$DTR_TAG
