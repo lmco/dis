@@ -43,16 +43,16 @@ class SdvcService {
                 });
 
                 // encrypt user password
-                const authIntegrationKey = JSON.stringify({
+                const authIntegrationKey = {
                     user: message.user,
                     name: 'sdvc',
                     key: utils.encryptKey(sdvcGeneratedPassword)
-                });
+                };
 
                 message.key = authIntegrationKey.key;
 
                 // Send message on channel NEW_AUTH_INTEGRATION_KEY with name and key
-                this.publisher.publish('NEW_AUTH_INTEGRATION_KEY', authIntegrationKey);
+                this.publisher.publish('NEW_AUTH_INTEGRATION_KEY', JSON.stringify(authIntegrationKey));
             }
 
             // Log in user to SDVC and update session with token
