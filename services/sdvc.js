@@ -32,15 +32,34 @@ class SdvcService {
                     strict: true
                 });
 
+                // Sanity check to see if user exists in SDVC
+                // get user in SDVC
+                // const user = await axios({
+                //     method: 'get',
+                //     url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
+                //     headers: { Authorization: `Bearer ${message.token}` },
+                // });
+
+                // console.log(user.data);
+                // if (!user.data.username) {
+
+                const headers = {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${message.token}`
+                };
                 // creating user
                 const newUser = await axios({
                     method: 'post',
                     url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
-                    headers: { Authorization: `Bearer ${message.token}` },
+                    // headers: { Authorization: `Bearer ${message.token}` },
+                    headers: headers,
                     data: {
                         password: sdvcGeneratedPassword
                     }
                 });
+
+                console.log(message.token);
 
                 // encrypt user password
                 const authIntegrationKey = {
@@ -49,10 +68,14 @@ class SdvcService {
                     key: utils.encryptKey(sdvcGeneratedPassword)
                 };
 
+                console.log(authIntegrationKey);
+
+
                 message.key = authIntegrationKey.key;
 
                 // Send message on channel NEW_AUTH_INTEGRATION_KEY with name and key
                 this.publisher.publish('NEW_AUTH_INTEGRATION_KEY', JSON.stringify(authIntegrationKey));
+                // }
             }
 
             // Log in user to SDVC and update session with token
@@ -67,6 +90,8 @@ class SdvcService {
                     password: decryptedKey
                 }
             });
+
+            console.log(token);
 
             // Get the users session
             let session = await this.publisher.get(`sess:${message.sessionId}`);
