@@ -16,15 +16,15 @@ subscriber.on('connect', () => {
 });
 
 subscriber.on('end', () => {
-    logger.err('Redis disconnected');
+    logger.error('Redis Subscriber disconnected');
 });
 
 subscriber.on('error', (err) => {
-    logger.err('Redis error: ', err);
+    logger.error('Redis Subscriber error: ', err);
 });
 
 subscriber.on('reconnecting', () => {
-    logger.info('Reconnecting Redis');
+    logger.info('Reconnecting Redis Subscriber');
 });
 
 // Exporting the subscriber

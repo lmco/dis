@@ -16,15 +16,15 @@ publisher.on('connect', () => {
 });
 
 publisher.on('end', () => {
-    logger.err('Redis disconnected');
+    logger.error('Redis Publisher disconnected');
 });
 
 publisher.on('error', (err) => {
-    logger.err('Redis error: ', err);
+    logger.error('Redis Publisher error: ', err);
 });
 
 publisher.on('reconnecting', () => {
-    logger.info('Reconnecting Redis');
+    logger.info('Reconnecting Redis Publisher');
 });
 
 // Exporting the publisher
