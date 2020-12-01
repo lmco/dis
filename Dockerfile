@@ -8,7 +8,7 @@ ENV HTTP_PROXY="http://proxy-lmi.global.lmco.com:80" \
     NO_PROXY=127.0.0.1,localhost \
     NODE_ENV=production \
     CAFILE_DST="./certs/LockheedMartinCertificateAuthority.pem" \
-    NODE_EXTRA_CA_CERT="./certs/LockheedMartinCertificateAuthority.pem"
+    NODE_EXTRA_CA_CERT="/opt/dynamic-integration-service/certs/LockheedMartinCertificateAuthority.pem"
 
 # Copy Project
 COPY . ./
