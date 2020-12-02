@@ -53,8 +53,7 @@ if (process.env.HTTPS_ENABLED === 'true') {
     const options = {
         key: privateKey,
         cert: certificate,
-        protocol: ['h2'],
-        db: 0
+        protocol: ['h2']
     };
 
     http2Server = spdy.createServer(options, app);

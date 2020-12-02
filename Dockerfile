@@ -8,7 +8,7 @@ ENV HTTP_PROXY="http://proxy-lmi.global.lmco.com:80" \
     NO_PROXY=127.0.0.1,localhost \
     NODE_ENV=production \
     CAFILE_DST="/opt/dynamic-integration-service/certs/LockheedMartinCertificateAuthority.pem" \
-    NODE_EXTRA_CA_CERT="/opt/dynamic-integration-service/certs/LockheedMartinCertificateAuthority.pem"
+    NODE_EXTRA_CA_CERTS="/opt/dynamic-integration-service/certs/LockheedMartinCertificateAuthority.pem"
 
 # Copy Project
 COPY . ./
@@ -43,7 +43,7 @@ RUN yarn config set cafile $CAFILE_DST \
     && yarn config set http_proxy $http_proxy \
     && yarn config set https_proxy $https_proxy
 
-RUN NOPOSTINSTALL=1 NOPREINSTALL=1 yarn install --production
+RUN yarn install --production
 
 ENV HTTP_PROXY="" \
     HTTPS_PROXY="" \
