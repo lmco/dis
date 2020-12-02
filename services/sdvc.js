@@ -40,16 +40,13 @@ class SdvcService {
                 //     headers: { Authorization: `Bearer ${message.token}` },
                 // });
 
-                // console.log(user.data);
-                // if (!user.data.username) {
-
                 const headers = {
                     'Content-Type': 'application/json;charset=UTF-8',
                     'Access-Control-Allow-Origin': '*',
                     'Authorization': `Bearer ${message.token}`
                 };
                 // creating user
-                const newUser = await axios({
+                await axios({
                     method: 'post',
                     url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
                     // headers: { Authorization: `Bearer ${message.token}` },
@@ -59,8 +56,6 @@ class SdvcService {
                     }
                 });
 
-                console.log(message.token);
-
                 // encrypt user password
                 const authIntegrationKey = {
                     user: message.user,
@@ -68,28 +63,23 @@ class SdvcService {
                     key: utils.encryptKey(sdvcGeneratedPassword)
                 };
 
-                console.log(authIntegrationKey);
-
 
                 message.key = authIntegrationKey.key;
 
                 // Send message on channel NEW_AUTH_INTEGRATION_KEY with name and key
                 this.publisher.publish('NEW_AUTH_INTEGRATION_KEY', JSON.stringify(authIntegrationKey));
-                // }
             }
 
             // Log in user to SDVC and update session with token
             // Decrypt key first
             const decryptedKey = utils.decryptKey(message.key);
 
+            // Declare headers
             const headers = {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'Access-Control-Allow-Origin': '*',
                 'Authorization': `Bearer ${message.token}`
             };
-
-            console.log('Decrypted Key');
-            console.log(decryptedKey);
 
             // Get auth token for SDVC
             const token = await axios({
@@ -100,8 +90,6 @@ class SdvcService {
                     password: decryptedKey
                 }
             });
-
-            console.log(token);
 
             // Get the users session
             let session = await this.publisher.get(`sess:${message.sessionId}`);
