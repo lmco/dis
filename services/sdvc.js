@@ -24,6 +24,13 @@ class SdvcService {
         try {
             message = JSON.parse(message);
 
+            // set headers
+            const headers = {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${message.token}`
+            };
+
             if (!message.exists) {
                 // Create an sdvc user with generated password
                 const sdvcGeneratedPassword = generator.generate({
@@ -32,24 +39,10 @@ class SdvcService {
                     strict: true
                 });
 
-                // Sanity check to see if user exists in SDVC
-                // get user in SDVC
-                // const user = await axios({
-                //     method: 'get',
-                //     url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
-                //     headers: { Authorization: `Bearer ${message.token}` },
-                // });
-
-                const headers = {
-                    'Content-Type': 'application/json;charset=UTF-8',
-                    'Access-Control-Allow-Origin': '*',
-                    'Authorization': `Bearer ${message.token}`
-                };
                 // creating user
                 await axios({
                     method: 'post',
                     url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
-                    // headers: { Authorization: `Bearer ${message.token}` },
                     headers: headers,
                     data: {
                         password: sdvcGeneratedPassword
@@ -63,7 +56,6 @@ class SdvcService {
                     key: utils.encryptKey(sdvcGeneratedPassword)
                 };
 
-
                 message.key = authIntegrationKey.key;
 
                 // Send message on channel NEW_AUTH_INTEGRATION_KEY with name and key
@@ -73,13 +65,6 @@ class SdvcService {
             // Log in user to SDVC and update session with token
             // Decrypt key first
             const decryptedKey = utils.decryptKey(message.key);
-
-            // Declare headers
-            const headers = {
-                'Content-Type': 'application/json;charset=UTF-8',
-                'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${message.token}`
-            };
 
             // Get auth token for SDVC
             const token = await axios({
@@ -98,7 +83,7 @@ class SdvcService {
             // Store token in users session
             session[`${this.serviceName}_token`] = token.data.token.token;
             this.publisher.set(`sess:${message.sessionId}`, JSON.stringify(session));
-            logger.info(`Auth token for SDVC successfully stored in user (${message.user}) session`)
+            logger.info(`Auth token for SDVC successfully stored in user (${message.user}) session`);
         }
         catch (err) {
             logger.error(err);

@@ -45,38 +45,9 @@ if (process.env.HTTP_ENABLED === 'true') {
     });
 }
 
-// Setting up HTTP/2 server
+// Setting up HTTP/2 (HTTPS) server
 if (process.env.HTTPS_ENABLED === 'true') { 
-    // Set http/2 options
-
-    // TLSv1.2 140-2 FIPS Compliant Cipher Suites. Builds an OpenSSL Cipher String per node tls docs
-    const ciphers = [
-      'ECDHE-RSA-AES256-GCM-SHA384',
-      'ECDHE-ECDSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-AES256-SHA384',
-      'DHE-RSA-AES256-SHA256',
-      'ECDHE-ECDSA-AES256-SHA384',
-      'DHE-RSA-AES256-GCM-SHA384',
-      'ECDHE-RSA-AES128-GCM-SHA256',
-      'ECDHE-ECDSA-AES128-GCM-SHA256',
-      'DHE-RSA-AES128-GCM-SHA256',
-      'ECDHE-RSA-AES128-SHA256',
-      'DHE-RSA-AES128-SHA256',
-      'ECDHE-ECDSA-AES128-SHA256',
-      '!aNULL',
-      '!eNULL',
-      '!EXPORT',
-      '!DES',
-      '!RC4',
-      '!MD5',
-      '!PSK',
-      '!SRP',
-      '!CAMELLIA',
-      '!MEDIUM',
-      '!LOW',
-      '@STRENGTH'
-    ].join(':');
-
+    // setting the options
     const privateKey = fs.readFileSync(path.join(process.cwd(), process.env.SSLKEY), 'utf8');
     const certificate = fs.readFileSync(path.join(process.cwd(), process.env.SSL_CERT), 'utf8');
     const options = {
@@ -89,7 +60,7 @@ if (process.env.HTTPS_ENABLED === 'true') {
         minVersion: 'TLSv1.2',
         maxVersion: 'TLSv1.2'
     };
-
+    // creating the https server
     http2Server = spdy.createServer(options, app);
     // Run HTTPS Server
     http2Server.listen(app.get('port'), () => {
