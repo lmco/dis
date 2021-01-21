@@ -66,8 +66,8 @@ class SdvcService {
             // Decrypt key first
             const decryptedKey = utils.decryptKey(message.key);
 
-            // Get auth token for SDVC
-            const token = await axios({
+            // Get auth token response for SDVC
+            const response = await axios({
                 method: 'post',
                 url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-token/${message.user}`,
                 headers: headers,
@@ -81,7 +81,7 @@ class SdvcService {
             session = JSON.parse(session);
 
             // Store token in users session
-            session[`${this.serviceName}_token`] = token.data.token.token;
+            session[`${this.serviceName}_token`] = response.data.token;
             this.publisher.set(`sess:${message.sessionId}`, JSON.stringify(session));
             logger.info(`Auth token for SDVC successfully stored in user (${message.user}) session`);
         }
