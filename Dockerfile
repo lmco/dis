@@ -1,6 +1,5 @@
 # FROM registry.access.redhat.com/ubi7/ubi
-ARG BASE_TAG="12"
-FROM jfrog.swf.mbx.us.lmco.com/mbx-docker/base-node:${BASE_TAG}
+FROM jfrog.swf.mbx.us.lmco.com/mbx-docker/base-node:12
 
 # Create dis user and run dis under that context
 RUN groupadd -r dis -g 1020 \
