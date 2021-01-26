@@ -21,13 +21,13 @@ stages:
 Docker Build & Push:
   stage: Docker
   tags:
-    - shell
+    - docker-builder
   only:
     - develop
     - master
   script:
     - export DOCKER_URI=$DOCKER_URL/$DOCKER_ORG/$DOCKER_REPO
-    - echo $ARTIFACTORY_API_KEY | docker login -u $ARTIFACTORY_USER --password-stdin $DOCKER_URL
+    - echo $ARTIFACTORY_API_KEY | docker login -u $ARTIFACTORY_USER $DOCKER_URL --password-stdin
     - docker build -t dis .
     - docker tag dis $DOCKER_URI
     - docker push $DOCKER_URI:$DOCKER_TAG
