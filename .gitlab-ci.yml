@@ -27,10 +27,10 @@ Docker Build & Push:
     - master
   script:
     - export DOCKER_URI=$DOCKER_URL/$DOCKER_ORG/$DOCKER_REPO
-    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.gitlab.us.lmco.com:443
-    - docker build -t dis .
-    - docker tag dis registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis
-    - docker push registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis:latest
     - echo $ARTIFACTORY_API_KEY | docker login -u $ARTIFACTORY_USER $DOCKER_URL --password-stdin
+    - docker build -t dis .
     - docker tag dis $DOCKER_URI
     - docker push $DOCKER_URI:$DOCKER_TAG
+    - docker tag dis registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.gitlab.us.lmco.com:443
+    - docker push registry.gitlab.us.lmco.com:443/mbx/mbee/dynamic-integration-service/dis:latest
