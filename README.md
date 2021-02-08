@@ -46,9 +46,21 @@ MCF sessions with authentication tokens.
      @param {Boolean} message.exists true/false if users integration key exists. in MCF
     ```
 
-3. Next, in the `index.js` file, import the class and add a property to the `serviceClasses` object creating a new instance to the service class you created. Make sure the property is the same name as the service.
+3. Add auth token to user session. Example below.
 
-4. Create a `.env` file in the root directory and copy the contents from the `example.env` file. Update the following Environment Variables.
+    ```javascript
+    // Get the users session
+    let session = await this.publisher.get(`sess:${message.sessionId}`);
+    session = JSON.parse(session);
+
+    // Store token in users session
+    session['SERVICENAME_token'] = 'AUTH_TOKEN';
+    this.publisher.set(`sess:${message.sessionId}`, JSON.stringify(session));
+    ```
+
+4. Next, in the `index.js` file, import the class and add a property to the `serviceClasses` object creating a new instance to the service class you created. Make sure the property is the same name as the service.
+
+5. Create a `.env` file in the root directory and copy the contents from the `example.env` file. Update the following Environment Variables.
 
 ```bash
 # this should be false in production
