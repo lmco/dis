@@ -62,28 +62,28 @@ MCF sessions with authentication tokens.
 
 5. Create a `.env` file in the root directory and copy the contents from the `example.env` file. Update the following Environment Variables.
 
-```bash
-# this should be false in production
-HTTP_ENABLED=true
-# this should be true in production
-HTTPS_ENABLED=false
-# port you want the dynamic service to run on
-PORT=8000
-# path to the key file. this is required in production.
-SSL_KEY=
-# path to the cert file. this is required in production.
-SSL_CERT=
-# URL to MCF
-MCF_URL=http://127.0.0.1:9080
-# redis host url or alias
-REDIS_HOST=127.0.0.1
-# redis port
-REDIS_PORT=6379
-# redis database
-REDIS_DB=0
-# encryption secret. this should be 256 bits
-ENCRYPTION_SECRET=p2s5v8y/B?E(H+MbQeThWmZq4t6w9z$C
-```
+    ```bash
+    # this should be false in production
+    HTTP_ENABLED=true
+    # this should be true in production
+    HTTPS_ENABLED=false
+    # port you want the dynamic service to run on
+    PORT=8000
+    # path to the key file. this is required in production.
+    SSL_KEY=
+    # path to the cert file. this is required in production.
+    SSL_CERT=
+    # URL to MCF
+    MCF_URL=http://127.0.0.1:9080
+    # redis host url or alias
+    REDIS_HOST=127.0.0.1
+    # redis port
+    REDIS_PORT=6379
+    # redis database
+    REDIS_DB=0
+    # encryption secret. this should be 256 bits
+    ENCRYPTION_SECRET=p2s5v8y/B?E(H+MbQeThWmZq4t6w9z$C
+    ```
 
 Feel free to add specific configuration for new services.
 
