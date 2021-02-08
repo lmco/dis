@@ -1,25 +1,28 @@
-FROM jfrog.swf.mbx.us.lmco.com/mbx-docker/base-node:12
+FROM registry.access.redhat.com/ubi7/ubi
+WORKDIR /opt/dynamic-integration-service
 
 # Create dis user and run dis under that context
 RUN groupadd -r dis -g 1020 \
     && useradd -u 1020 -r -g dis -m -d /opt/dynamic-integration-service -s /sbin/nologin -c "DIS user" dis
 
-WORKDIR /opt/dynamic-integration-service
+ENV NODE_ENV=production
 
-ENV NODE_ENV=production \
-    CAFILE_DST="/opt/dynamic-integration-service/certs/LockheedMartinCertificateAuthority.pem"
+# Install wget and git
+RUN yum install -y wget
+
+# Install NodeJS 12
+RUN wget https://nodejs.org/dist/v12.18.4/node-v12.18.4-linux-x64.tar.gz --no-check-certificate \
+    && tar --strip-components 1 -xzvf node-v* -C /usr/local
+
+# Install yarn
+RUN npm install -g yarn
 
 # Copy Project
 COPY . ./
 
-USER dis
-
 RUN yarn install --production
 
-ENV HTTP_PROXY="" \
-    HTTPS_PROXY="" \
-    http_proxy="" \
-    https_proxy=""
+USER dis
 
 EXPOSE 8000
 

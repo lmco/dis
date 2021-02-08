@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Model-Based Engineering Environment",
     "main": "index.js",
-    "repository": "https://gitlab.us.lmco.com/mbx/mbee/dynamic-integration-service.git",
+    "repository": "https://github.com/lmco/dis.git",
     "author": "Lockheed Martin",
     "license": "MIT",
     "private": true,
