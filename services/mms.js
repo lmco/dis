@@ -5,22 +5,22 @@ const generator = require('generate-password');
 const utils = require('../lib/utils');
 const logger = require('../lib/logger');
 
-class SdvcService {
+class MmsService {
     constructor(publisher) {
-        this.serviceName = 'sdvc';
+        this.serviceName = 'mms';
         this.publisher = publisher;
     }
 
     /**
-     * Handle the authentication for the SDVC Service
+     * Handle the authentication for the MMS Service
      * @param {Object} message the object containing the properties below.
      * @param {String} message.sessionId the session ID for the user
-     * @param {String} message.user the users SDVC username
+     * @param {String} message.user the users MMS username
      * @param {String} message.token the users MCF token
-     * @param {Boolean} message.exists true/false if user exists in SDVC
+     * @param {Boolean} message.exists true/false if user exists in MMS
      */
     async handleAuth(message) {
-        logger.info('Handling Auth for SDVC');
+        logger.info('Handling Auth for MMS');
         try {
             message = JSON.parse(message);
 
@@ -32,8 +32,8 @@ class SdvcService {
             };
 
             if (!message.exists) {
-                // Create an sdvc user with generated password
-                const sdvcGeneratedPassword = generator.generate({
+                // Create an mms user with generated password
+                const mmsGeneratedPassword = generator.generate({
                     length: 12,
                     numbers: true,
                     strict: true
@@ -42,18 +42,18 @@ class SdvcService {
                 // creating user
                 await axios({
                     method: 'post',
-                    url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-user/${message.user}`,
+                    url: `${process.env.MCF_URL}/plugins/mms-adapter/alfresco/service/mms-user/${message.user}`,
                     headers: headers,
                     data: {
-                        password: sdvcGeneratedPassword
+                        password: mmsGeneratedPassword
                     }
                 });
 
                 // encrypt user password
                 const authIntegrationKey = {
                     user: message.user,
-                    name: 'sdvc',
-                    key: utils.encryptKey(sdvcGeneratedPassword)
+                    name: 'mms',
+                    key: utils.encryptKey(mmsGeneratedPassword)
                 };
 
                 message.key = authIntegrationKey.key;
@@ -62,14 +62,14 @@ class SdvcService {
                 this.publisher.publish('NEW_AUTH_INTEGRATION_KEY', JSON.stringify(authIntegrationKey));
             }
 
-            // Log in user to SDVC and update session with token
+            // Log in user to MMS and update session with token
             // Decrypt key first
             const decryptedKey = utils.decryptKey(message.key);
 
-            // Get auth token response for SDVC
+            // Get auth token response for MMS
             const response = await axios({
                 method: 'post',
-                url: `${process.env.MCF_URL}/plugins/mms3-adapter/alfresco/service/sdvc-token/${message.user}`,
+                url: `${process.env.MCF_URL}/plugins/mms-adapter/alfresco/service/mms-token/${message.user}`,
                 headers: headers,
                 data: {
                     password: decryptedKey
@@ -83,7 +83,7 @@ class SdvcService {
             // Store token in users session
             session[`${this.serviceName}_token`] = response.data.token;
             this.publisher.set(`sess:${message.sessionId}`, JSON.stringify(session));
-            logger.info(`Auth token for SDVC successfully stored in user (${message.user}) session`);
+            logger.info(`Auth token for MMS successfully stored in user (${message.user}) session`);
         }
         catch (err) {
             logger.error(err);
@@ -92,4 +92,4 @@ class SdvcService {
     }
 }
 
-module.exports = SdvcService;
+module.exports = MmsService;
