@@ -1,11 +1,11 @@
 {
     "name": "dis",
-    "version": "1.0.0",
-    "description": "Model-Based Engineering Environment",
+    "version": "1.0.1",
+    "description": "OpenMBEE Dynamic Integration Service",
     "main": "index.js",
-    "repository": "https://github.com/lmco/dis.git",
+    "repository": "https://github.com/open-mbee/dis.git",
     "author": "Lockheed Martin",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "private": true,
     "dependencies": {
         "axios": "^0.19.2",

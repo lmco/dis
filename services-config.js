@@ -2,8 +2,9 @@
 
 const services = [
     {
-        name: 'sdvc',
-        url: 'http://localhost:8080'
+        name: 'mms',
+        protocol: 'http',
+        url: 'localhost:8080'
     }
 ];
 
