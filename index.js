@@ -17,7 +17,7 @@ const logger = require('./lib/logger');
 const integrated_services = require('./services-config');
 
 // Importing all services
-const sdvc = require('./services/sdvc');
+const mms = require('./services/mms');
 
 // Initializing app
 const app = express();
@@ -75,7 +75,7 @@ const subscriber = require('./pubsub/subscriber');
 
 // INITIALIZING all services
 const serviceClasses = {
-    sdvc: new sdvc(publisher)
+    mms: new mms(publisher)
 }
 
 /**

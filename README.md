@@ -20,8 +20,8 @@ MCF sessions with authentication tokens.
 
 #### Source Code
 
-1. Clone the Dynamic Integration Service by running `git clone https://gitlab.us.lmco.com/mbx/mbee/dynamic-integration-service.git`.
-2. Navigate to the directory with `cd dynamic-integration-service`.
+1. Clone the Dynamic Integration Service by running `git clone https://github.com/open-mbee/dis.git`.
+2. Navigate to the directory with `cd dis`
 
 ## Getting Started
 
@@ -36,7 +36,8 @@ MCF sessions with authentication tokens.
     ```javascript
     {
         name: 'NAME_OF_SERVICE',
-        url: 'URL_OF_SERVICE'
+        protocol: 'http/https',
+        url: 'HOSTNAME_OF_SERVICE:PORT_OF_SERVICE'
     }
     ```
 
@@ -85,8 +86,8 @@ MCF sessions with authentication tokens.
     REDIS_PORT=6379
     # redis database
     REDIS_DB=0
-    # encryption secret. this should be 256 bits
-    ENCRYPTION_SECRET=p2s5v8y/B?E(H+MbQeThWmZq4t6w9z$C
+    # encryption secret/pasphrase. this should be replaced using a cryptographically secure method like `openssl rand -base64 16`
+    ENCRYPTION_SECRET=a_really_big_secret
     ```
 
 Feel free to add specific configuration for new services.
